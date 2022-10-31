@@ -5,19 +5,24 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.File;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     TextView noMusicText;
-
+    ArrayList<AudioModel> songsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +49,22 @@ public class MainActivity extends AppCompatActivity {
         // all the music sample data are stored in this cursor
         Cursor cursor = getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection, null, null);
 
-//        //yet to be filled
-//        while(cursor.moveToNext()){
-//            AudioModel songData = new AudioModel(cursor.getString(1),cursor.getString(0),cursor.getString(2));
-//            if(new File(songData.getPath()).exists())
-//                songsList.add(songData);
-//        }
+        //adding each songData to songList sing the cursor
+        while(cursor.moveToNext()){
+            AudioModel songData = new AudioModel(cursor.getString(1),cursor.getString(0),cursor.getString(2));
+            if(new File(songData.getPath()).exists()) {//check for the existence of songs (sometimes may not due to exceptions)
+                songsList.add(songData);
+            }
+        }
 
-        if(songsList.size()==0){
-            noMusicTextView.setVisibility(View.VISIBLE);
-        }else{
-            //recyclerview
+        // confirm the songList size
+        if(songsList.size()==0){    // if there are no songs in the list
+            noMusicText.setVisibility(View.VISIBLE);
+        }else{ // if the songs existS
+            //showing songs in the recyclerview
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new MusicListAdapter(songsList,getApplicationContext()));
+            //still not done yet
+//            recyclerView.setAdapter(new MusicListAdapter(songsList,getApplicationContext()));
         }
 
     }
