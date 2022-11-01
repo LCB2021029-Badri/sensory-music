@@ -24,6 +24,12 @@ class MusicListAdapter(val songList: ArrayList<AudioModel>,context: Context):Rec
         holder.itemView.apply {
             titleTextView!!.setText(songData.title)
         }
+
+        //to enable the playing of music when we click the song
+        holder.itemView.setOnClickListener {
+            //navigate to another activity
+
+        }
     }
 
     override fun getItemCount(): Int {
