@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/grey">
 
     <TextView
         android:id="@+id/songs_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:text="SONGS"
-        android:textSize="20dp"
+        android:textColor="@color/skin"
+        android:text="SENSOR  MUSIC  : "
+        android:textSize="24dp"
         android:textStyle="bold"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
         android:padding="18dp"
         />
 

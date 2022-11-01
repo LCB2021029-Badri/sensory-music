@@ -26,12 +26,12 @@ class MusicListAdapter(val songList: ArrayList<AudioModel>,var context: Context)
         //to highlight the music being played on the recycler list
         if(MyMediaPalyer.currentIndex == position){
             holder.itemView.apply {
-                titleTextView!!.setTextColor(Color.parseColor("#FF0000"))
+                titleTextView!!.setTextColor(Color.parseColor("#F3DF26"))
             }
         }
         else{
             holder.itemView.apply {
-                titleTextView!!.setTextColor(Color.parseColor("#000000"))
+                titleTextView!!.setTextColor(Color.parseColor("#1B9CA1"))
             }
 
         }
@@ -60,5 +60,4 @@ class MusicListAdapter(val songList: ArrayList<AudioModel>,var context: Context)
     override fun getItemCount(): Int {
         return songList.size
     }
-// THIS IS THE MAIN CLASS
 }

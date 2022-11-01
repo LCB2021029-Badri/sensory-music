@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/purple_200"
+    android:background="@color/greybg"
     android:layout_marginTop="5dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    android:paddingTop="10dp">
+    android:paddingTop="10dp"
+    android:paddingHorizontal="10dp">
     
 <!-- create a page title here  -->
     <ImageView
@@ -15,7 +16,7 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/img1"/>
+        android:src="@drawable/icon_music"/>
     <TextView
         android:id="@+id/music_title_text"
         android:layout_width="match_parent"
@@ -26,7 +27,8 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:text="Music"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
+        android:textSize="16sp"
         />
 
 </RelativeLayout>

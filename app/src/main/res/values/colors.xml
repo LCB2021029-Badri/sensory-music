@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="greybg">#181818</color>
+    <color name="greyfg">#121212</color>
+    <color name="cd">#1B1C20</color>
+    <color name="grey">#2A2A2A</color>
+    <color name="mainSkin">#1B9CA1</color>
+    <color name="blood">#290606</color>
+    <color name="skin">#F3DF26</color>
+    <color name="semiTransparentBlack">#00000000</color>
 </resources>

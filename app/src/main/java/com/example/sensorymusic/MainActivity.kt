@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         //adding each songData to songList sing the cursor
         while (cursor!!.moveToNext()) {
             val songData = AudioModel(cursor.getString(1), cursor.getString(0), cursor.getString(2))
-            if (File(songData.path).exists()) { //check for the existence of songs (sometimes may not due to exceptions)
+            if (File(songData.path).exists() && (((cursor.getString(2).toFloat())/60000)%60000) > 1.9) { //check for the existence of songs (sometimes may not due to exceptions) and duration greater than 2 minutes
                 songsList.add(songData)
             }
         }
