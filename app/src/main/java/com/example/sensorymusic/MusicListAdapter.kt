@@ -2,6 +2,7 @@ package com.example.sensorymusic
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,20 @@ class MusicListAdapter(val songList: ArrayList<AudioModel>,var context: Context)
         var songData: AudioModel = songList.get(position)
         var titleTextView = binding?.musicTitleText
         var iconImageView = binding?.iconView
+
+        //to highlight the music being played on the recycler list
+        if(MyMediaPalyer.currentIndex == position){
+            holder.itemView.apply {
+                titleTextView!!.setTextColor(Color.parseColor("#FF0000"))
+            }
+        }
+        else{
+            holder.itemView.apply {
+                titleTextView!!.setTextColor(Color.parseColor("#000000"))
+            }
+
+        }
+
         holder.itemView.apply {
             titleTextView!!.setText(songData.title)
         }
@@ -39,6 +54,7 @@ class MusicListAdapter(val songList: ArrayList<AudioModel>,var context: Context)
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }
+
     }
 
     override fun getItemCount(): Int {

@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // yet to be filled
+    // updates when we go back from MusicPlayerActivity to MainActivity
     override fun onResume() {
         super.onResume()
         if (recyclerView != null) {
