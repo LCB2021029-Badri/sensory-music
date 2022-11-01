@@ -63,8 +63,7 @@ public class MainActivity extends AppCompatActivity {
         }else{ // if the songs existS
             //showing songs in the recyclerview
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            //still not done yet
-//            recyclerView.setAdapter(new MusicListAdapter(songsList,getApplicationContext()));
+            recyclerView.setAdapter(new MusicListAdapter(songsList,getApplicationContext()));
         }
 
     }
