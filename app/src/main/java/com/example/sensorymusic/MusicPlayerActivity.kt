@@ -173,11 +173,11 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
             val sides = p0.values[0]
             val upDown = p0.values[1]
 
-            if (sides.toInt() > 5) {
+            if (sides.toInt() > 8) {
                 // we call previous method
                 playPreviousSong()
             }
-            if(sides.toInt()<5){
+            if(sides.toInt() < -8){
                 // we call next function
                 playNextSong()
             }
