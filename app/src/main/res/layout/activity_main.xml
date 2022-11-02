@@ -10,13 +10,13 @@
 
     <TextView
         android:id="@+id/songs_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/skin"
         android:text="SENSOR  MUSIC  : "
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        android:background="@color/blood"
+        android:background="@color/mainSkin"
         android:textSize="24dp"
         android:textStyle="bold"
         android:layout_alignParentLeft="true"

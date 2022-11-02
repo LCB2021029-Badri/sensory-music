@@ -16,6 +16,7 @@
         android:padding="5dp"
         android:singleLine="true"
         android:text="Title of the song"
+        android:background="@color/mainSkin"
         android:textColor="@color/skin"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,10 +41,11 @@
         android:id="@+id/seek_bar"
         android:layout_width="240dp"
         android:layout_height="14dp"
-        android:background="@color/greyfg"
-        android:backgroundTint="@color/greybg"
+        android:layout_marginTop="4dp"
+        android:progressTint="@color/skin"
+        android:progressBackgroundTint="@color/mainSkin"
         app:layout_constraintEnd_toEndOf="@+id/total_time"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintStart_toStartOf="@+id/current_time"
         app:layout_constraintTop_toBottomOf="@+id/current_time" />
 
@@ -51,8 +53,10 @@
         android:id="@+id/current_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
         android:text="0.00"
         android:textColor="@color/mainSkin"
+        android:textSize="10sp"
         app:layout_constraintStart_toStartOf="@+id/music_icon_big"
         app:layout_constraintTop_toBottomOf="@+id/music_icon_big" />
 
@@ -71,8 +75,10 @@
         android:id="@+id/total_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
         android:text="0.00"
         android:textColor="@color/mainSkin"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="@+id/music_icon_big"
         app:layout_constraintTop_toBottomOf="@+id/music_icon_big" />
 
