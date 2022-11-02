@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sensorymusic.databinding.RecyclerItemBinding
 
-class MusicListAdapter(val songList: ArrayList<AudioModel>,var context: Context):RecyclerView.Adapter<MusicListAdapter.ItemViewHolder>() {
+class MusicListAdapter(val songList: ArrayList<AudioModel>,val context: Context):RecyclerView.Adapter<MusicListAdapter.ItemViewHolder>() {
 
     private var binding: RecyclerItemBinding? = null
+
     inner class ItemViewHolder(itemBinding: RecyclerItemBinding): RecyclerView.ViewHolder(itemBinding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -19,25 +20,21 @@ class MusicListAdapter(val songList: ArrayList<AudioModel>,var context: Context)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        var songData: AudioModel = songList.get(position)
-        var titleTextView = binding?.musicTitleText
-        var iconImageView = binding?.iconView
+        val songData: AudioModel = songList[position]
+//        val titleTextView = binding?.musicTitleText
+        val iconImageView = binding?.iconView
 
-        //to highlight the music being played on the recycler list
-        if(MyMediaPalyer.currentIndex == position){
-            holder.itemView.apply {
-                titleTextView!!.setTextColor(Color.parseColor("#F3DF26"))
-            }
-        }
-        else{
-            holder.itemView.apply {
-                titleTextView!!.setTextColor(Color.parseColor("#1B9CA1"))
-            }
-
-        }
 
         holder.itemView.apply {
-            titleTextView!!.setText(songData.title)
+            binding?.musicTitleText?.text = songData.title
+
+//            //can apply color according to position
+//            if(position%2==0){
+//                binding?.musicTitleText?.setBackgroundColor(ContextCompat.getColor(context,R.color.grey))
+//            }else{
+//                binding?.musicTitleText?.setBackgroundColor(ContextCompat.getColor(context,R.color.white))
+//            }
+
         }
 
         //to enable the playing of music when we click the song
@@ -55,9 +52,29 @@ class MusicListAdapter(val songList: ArrayList<AudioModel>,var context: Context)
             context.startActivity(intent)
         }
 
+        //to highlight the music being played on the recycler list
+        if(MyMediaPalyer.currentIndex == position){
+            holder.itemView.apply {
+                binding?.musicTitleText?.setTextColor(Color.parseColor("#F3DF26"))
+            }
+        }
+        else{
+            holder.itemView.apply {
+                binding?.musicTitleText?.setTextColor(Color.parseColor("#1B9CA1"))
+            }
+        }
     }
 
     override fun getItemCount(): Int {
         return songList.size
     }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
 }

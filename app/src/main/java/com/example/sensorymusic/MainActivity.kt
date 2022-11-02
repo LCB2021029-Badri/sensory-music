@@ -1,6 +1,8 @@
 package com.example.sensorymusic
 
 import android.Manifest
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.TextView
@@ -9,10 +11,20 @@ import android.provider.MediaStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.core.content.ContextCompat
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
 import android.view.View
 import androidx.core.app.ActivityCompat
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.sensorymusic.databinding.ActivityMainBinding
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.DexterBuilder.MultiPermissionListener
+import com.karumi.dexter.DexterBuilder.SinglePermissionListener
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import java.io.File
 import java.util.ArrayList
 
@@ -38,6 +50,8 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+//        checkPermissionNew()
+
         //extracting all the songs from the database
         val projection = arrayOf(
             MediaStore.Audio.Media.TITLE,
@@ -59,7 +73,9 @@ class MainActivity : AppCompatActivity() {
         //adding each songData to songList sing the cursor
         while (cursor!!.moveToNext()) {
             val songData = AudioModel(cursor.getString(1), cursor.getString(0), cursor.getString(2))
-            if (File(songData.path).exists() && (((cursor.getString(2).toFloat())/60000)%60000) > 1.9) { //check for the existence of songs (sometimes may not due to exceptions) and duration greater than 2 minutes
+            if (File(songData.path).exists() && (((cursor.getString(2)
+                    .toFloat()) / 60000) % 60000) > 1.9
+            ) { //check for the existence of songs (sometimes may not due to exceptions) and duration greater than 2 minutes
                 songsList.add(songData)
             }
         }
@@ -72,9 +88,11 @@ class MainActivity : AppCompatActivity() {
             binding.recyclerView.setLayoutManager(LinearLayoutManager(this))
             binding.recyclerView.setAdapter(MusicListAdapter(songsList, applicationContext))
         }
+
+
     }
 
-    //storage checking and request permissions
+    //    storage checking and request permissions
     fun checkPermission(): Boolean {
         val result = ContextCompat.checkSelfPermission(
             this@MainActivity,
@@ -88,19 +106,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this@MainActivity,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-        ) { //if the permission is denied
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this@MainActivity, Manifest.permission.READ_EXTERNAL_STORAGE)) { //if the permission is denied
+            showRotationalDialogForPermission()
             Toast.makeText(this, "storage permission is required", Toast.LENGTH_SHORT).show()
         } else { //if the permission is accepted
             ActivityCompat.requestPermissions(
                 this@MainActivity,
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                123321
+                69
             )
         }
+    }
+
+
+    // dialog box
+    private fun showRotationalDialogForPermission() {
+        AlertDialog.Builder(this)
+            .setMessage("It looks like you have turned off permissions " + "required for this feature. It can be made under App Settings!!!")
+            .setPositiveButton("Go to Settings(Badri)") { _, _ ->
+                try {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    val uri = Uri.fromParts("package", packageName, null)
+                    intent.data = uri
+                    startActivity(intent)
+
+                } catch (e: ActivityNotFoundException) {
+                    e.printStackTrace()
+                }
+
+            }.setNegativeButton("Cancel(Badri)") { dialog, _ ->
+                dialog.dismiss()
+            }.show()
     }
 
     // updates when we go back from MusicPlayerActivity to MainActivity
@@ -110,4 +146,6 @@ class MainActivity : AppCompatActivity() {
             binding.recyclerView!!.adapter = MusicListAdapter(songsList, applicationContext)
         }
     }
+
+
 }
