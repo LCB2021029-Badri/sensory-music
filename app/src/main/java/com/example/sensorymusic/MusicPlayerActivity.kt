@@ -1,5 +1,10 @@
 package com.example.sensorymusic
 
+import android.graphics.Color
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import com.example.sensorymusic.MyMediaPalyer.instance
 import com.example.sensorymusic.MyMediaPalyer.currentIndex
 import androidx.appcompat.app.AppCompatActivity
@@ -16,11 +21,12 @@ import com.example.sensorymusic.R
 import com.example.sensorymusic.MusicPlayerActivity
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import java.io.IOException
 import java.util.ArrayList
 import java.util.concurrent.TimeUnit
 
-class MusicPlayerActivity : AppCompatActivity() {
+class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var titleTv: TextView
     private lateinit var currentTimeTv: TextView
     private lateinit var totalTimeTv: TextView
@@ -31,6 +37,9 @@ class MusicPlayerActivity : AppCompatActivity() {
     private lateinit var musicIcon: ImageView
     private lateinit var songsList: ArrayList<AudioModel>
     private lateinit var currentSong: AudioModel
+
+    //imlpementing tsensors to my app
+    private lateinit var sensorManager: SensorManager
 
     private var mediaPlayer = instance
     var x = 0
@@ -86,6 +95,10 @@ class MusicPlayerActivity : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
+
+        //implementing sensor
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        setUpSensor()
     }
 
     //resources for playing the current song
@@ -145,6 +158,51 @@ class MusicPlayerActivity : AppCompatActivity() {
         } else {
             mediaPlayer!!.start()
         }
+    }
+
+    private fun setUpSensor() {
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)?.also {
+//            sensorManager.registerListener(this,it,SensorManager.SENSOR_DELAY_FASTEST,SensorManager.SENSOR_DELAY_FASTEST)
+            sensorManager!!.registerListener(this, it, SensorManager.SENSOR_DELAY_UI)
+        }
+    }
+
+    override fun onSensorChanged(p0: SensorEvent?) {
+        if (p0?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {  // we retrtieve information if it is this type of sensor
+            val sides = p0.values[0]
+            val upDown = p0.values[1]
+
+            if (sides.toInt() > 5) {
+                // we call previous method
+                playPreviousSong()
+            }
+            if(sides.toInt()<5){
+                // we call next function
+                playNextSong()
+            }
+
+//            square.apply {
+//                rotationX = upDown *3f
+//                rotationY = sides *3f
+//                rotation = -sides
+//                translationX = sides * -10
+//                translationY = upDown * 10
+//            }
+//
+//            val color = if(upDown.toInt() == 0 && sides.toInt() == 0) Color.GREEN else Color.RED
+//            square.setBackgroundColor(color)
+//            square.text = "U/D - ${upDown.toInt()}\n L/R - ${sides.toInt()}"
+        }
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+        return
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sensorManager.unregisterListener(this)
     }
 
     companion object {
