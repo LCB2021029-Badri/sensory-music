@@ -69,6 +69,8 @@ class MusicListAdapter(val songList: ArrayList<AudioModel>,val context: Context)
         return songList.size
     }
 
+
+    //if there are large values in recycler view use these 2 functions to optimize
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }

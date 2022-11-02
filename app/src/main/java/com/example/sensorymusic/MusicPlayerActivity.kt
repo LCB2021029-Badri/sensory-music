@@ -17,6 +17,7 @@ import com.example.sensorymusic.MyMediaPalyer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.PersistableBundle
 import android.view.View
 import android.widget.ImageView
 import com.example.sensorymusic.R
@@ -138,6 +139,7 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
     private fun playMusic() {
         //we need a media player instance
         mediaPlayer!!.reset()
+
         try {
             mediaPlayer!!.setDataSource(currentSong!!.path)
             mediaPlayer!!.prepare()
@@ -201,12 +203,13 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
             val sides = p0.values[0]
             val upDown = p0.values[1]
 
+            //control using sensor using following if statements
 //            Timer().schedule(1000){}
-                if (sides.toInt() > 8 && sides.toInt() < 10) {
+                if (sides.toFloat() > 8 && sides.toFloat() < 8.2) {
                     // we call previous method
                     playPreviousSong()
                 }
-                if(sides.toInt() < -8 && sides.toInt() > -10){
+                if(sides.toFloat() < -8.2 && sides.toFloat() > -8){
                     // we call next function
                     playNextSong()
                 }
@@ -234,6 +237,23 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
         super.onDestroy()
         sensorManager.unregisterListener(this)
     }
+
+
+//    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+//        super.onSaveInstanceState(outState, outPersistentState)
+//
+//        val audioSaved : AudioModel = currentSong
+//        outState.get("savedSong", currentSong)
+//
+//    }
+//
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//
+//        val usingSongIndex : Int = savedInstanceState.getInt("savedSong", currentIndex)
+//        currentIndex = usingSongIndex
+//        currentSong = songsList[currentIndex]
+//    }
 
 
 
