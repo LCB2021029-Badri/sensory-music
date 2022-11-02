@@ -1,5 +1,6 @@
 package com.example.sensorymusic
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -15,6 +16,7 @@ import android.media.MediaPlayer
 import com.example.sensorymusic.MyMediaPalyer
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import com.example.sensorymusic.R
@@ -22,9 +24,12 @@ import com.example.sensorymusic.MusicPlayerActivity
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import kotlinx.coroutines.delay
 import java.io.IOException
 import java.util.ArrayList
+import java.util.Timer
 import java.util.concurrent.TimeUnit
+import kotlin.concurrent.schedule
 
 class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var titleTv: TextView
@@ -99,6 +104,7 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
         //implementing sensor
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setUpSensor()
+
     }
 
     //resources for playing the current song
@@ -131,24 +137,30 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun playNextSong() {
-        //if not last song
-        currentIndex += 1
-        mediaPlayer!!.reset()
-        setResourcesWithMusic()
         //if last song
         if (currentIndex == songsList!!.size - 1) {
-            return
+            currentIndex = songsList!!.size - 1
+            mediaPlayer!!.reset()
+            setResourcesWithMusic()
+        }else{
+            //if not last song
+            currentIndex += 1
+            mediaPlayer!!.reset()
+            setResourcesWithMusic()
         }
     }
 
     private fun playPreviousSong() {
-        //if not first song
-        currentIndex -= 1
-        mediaPlayer!!.reset()
-        setResourcesWithMusic()
         //if first song
         if (currentIndex == 0) {
-            return
+            currentIndex = 0
+            mediaPlayer!!.reset()
+            setResourcesWithMusic()
+        }else{
+            //if not first song
+            currentIndex -= 1
+            mediaPlayer!!.reset()
+            setResourcesWithMusic()
         }
     }
 
@@ -165,22 +177,26 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
         sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)?.also {
 //            sensorManager.registerListener(this,it,SensorManager.SENSOR_DELAY_FASTEST,SensorManager.SENSOR_DELAY_FASTEST)
             sensorManager!!.registerListener(this, it, SensorManager.SENSOR_DELAY_UI)
+//            sensorManager!!.registerListener(this, it,1000000,1000000)
         }
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
+
         if (p0?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {  // we retrtieve information if it is this type of sensor
             val sides = p0.values[0]
             val upDown = p0.values[1]
 
-            if (sides.toInt() > 8) {
-                // we call previous method
-                playPreviousSong()
-            }
-            if(sides.toInt() < -8){
-                // we call next function
-                playNextSong()
-            }
+//            Timer().schedule(1000){}
+                if (sides.toInt() > 8 && sides.toInt() < 10) {
+                    // we call previous method
+                    playPreviousSong()
+                }
+                if(sides.toInt() < -8 && sides.toInt() > -10){
+                    // we call next function
+                    playNextSong()
+                }
+
 
 //            square.apply {
 //                rotationX = upDown *3f
@@ -205,6 +221,9 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
         sensorManager.unregisterListener(this)
     }
 
+
+
+
     companion object {
         //for the millisecond format of the duration
         fun convertToMMSS(duration: String): String {
@@ -216,5 +235,6 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
                 TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1)
             )
         }
+        //
     }
 }
