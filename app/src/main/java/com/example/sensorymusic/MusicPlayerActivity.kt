@@ -76,6 +76,8 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
                 if (mediaPlayer != null) {
                     seekBar.setProgress(mediaPlayer!!.currentPosition)
                     currentTimeTv.setText(convertToMMSS(mediaPlayer!!.currentPosition.toString() + ""))
+
+                    //image rotation
                     if (mediaPlayer!!.isPlaying) {
                         pausePlay.setImageResource(R.drawable.icon_pause)
                         musicIcon.setRotation(x++.toFloat())
@@ -84,6 +86,13 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
                         musicIcon.setRotation(0f)
                     }
                 }
+
+//                // if the song is completed
+//                if(mediaPlayer != null && mediaPlayer!!.currentPosition == mediaPlayer!!.duration){
+//                    mediaPlayer!!.start()
+//                }
+
+
                 //smoothen the seekbar
                 Handler().postDelayed(this, 100)
             }
@@ -104,6 +113,11 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
         //implementing sensor
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setUpSensor()
+
+        // if the current song is completed
+        mediaPlayer!!.setOnCompletionListener {
+            playNextSong()
+        }
 
     }
 

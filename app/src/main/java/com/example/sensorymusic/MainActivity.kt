@@ -12,19 +12,25 @@ import android.content.pm.PackageManager
 import android.view.View
 import androidx.core.app.ActivityCompat
 import android.widget.Toast
+import com.example.sensorymusic.databinding.ActivityMainBinding
 import java.io.File
 import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
-    lateinit var recyclerView: RecyclerView
-    lateinit var noMusicText: TextView
+
+    private lateinit var binding: ActivityMainBinding
     var songsList = ArrayList<AudioModel>()
+
+//    lateinit var recyclerView: RecyclerView
+//    lateinit var noMusicText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        recyclerView = findViewById(R.id.recycler_view)
-        noMusicText = findViewById(R.id.no_songs)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+//        recyclerView = findViewById(R.id.recycler_view)
+//        noMusicText = findViewById(R.id.no_songs)
 
         //permission
         if (checkPermission() == false) {
@@ -60,11 +66,11 @@ class MainActivity : AppCompatActivity() {
 
         // confirm the songList size
         if (songsList.size == 0) {    // if there are no songs in the list
-            noMusicText.visibility = View.INVISIBLE
+            binding.noSongs.visibility = View.INVISIBLE
         } else { // if the songs existS
             //showing songs in the recyclerview
-            recyclerView.setLayoutManager(LinearLayoutManager(this))
-            recyclerView.setAdapter(MusicListAdapter(songsList, applicationContext))
+            binding.recyclerView.setLayoutManager(LinearLayoutManager(this))
+            binding.recyclerView.setAdapter(MusicListAdapter(songsList, applicationContext))
         }
     }
 
@@ -100,8 +106,8 @@ class MainActivity : AppCompatActivity() {
     // updates when we go back from MusicPlayerActivity to MainActivity
     override fun onResume() {
         super.onResume()
-        if (recyclerView != null) {
-            recyclerView!!.adapter = MusicListAdapter(songsList, applicationContext)
+        if (binding.recyclerView != null) {
+            binding.recyclerView!!.adapter = MusicListAdapter(songsList, applicationContext)
         }
     }
 }
