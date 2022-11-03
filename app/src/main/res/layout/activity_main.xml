@@ -12,16 +12,17 @@
         android:id="@+id/songs_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/skin"
-        android:text="SENSOR  MUSIC  : "
+        android:layout_alignParentLeft="true"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        android:background="@color/mainSkin"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/textbg"
+        android:padding="10dp"
+        android:text="SENSORY  MUSIC  : "
+        android:textColor="@color/skin"
         android:textSize="24dp"
-        android:textStyle="bold"
-        android:layout_alignParentLeft="true"
-        android:padding="18dp"
-        />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/no_songs"
