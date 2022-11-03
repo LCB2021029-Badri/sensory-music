@@ -205,11 +205,11 @@ class MusicPlayerActivity : AppCompatActivity(), SensorEventListener {
 
             //control using sensor using following if statements
 //            Timer().schedule(1000){}
-                if (sides.toFloat() > 8 && sides.toFloat() < 8.2) {
+                if (sides.toFloat() > 8 && sides.toFloat() < 9) {
                     // we call previous method
                     playPreviousSong()
                 }
-                if(sides.toFloat() < -8.2 && sides.toFloat() > -8){
+                if(sides.toFloat() < -8 && sides.toFloat() > -9){
                     // we call next function
                     playNextSong()
                 }
