@@ -26,10 +26,12 @@
 
     <TextView
         android:id="@+id/no_songs"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="no songs available in the device"
+        android:background="@color/white"
+        android:textAlignment="center"
         android:visibility="gone"
         />
 

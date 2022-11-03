@@ -49,13 +49,12 @@ class MainActivity : AppCompatActivity() {
 //        recyclerView = findViewById(R.id.recycler_view)
 //        noMusicText = findViewById(R.id.no_songs)
 
-        //permission
+        // permission is only asked if checked resuld is false
         if (checkPermission() == false) {
-            requestPermission()
+            showRotationalDialogForPermission()
             return
         }
 
-//        checkPermissionNew()
 
         //extracting all the songs from the database
         val projection = arrayOf(
@@ -87,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
         // confirm the songList size
         if (songsList.size == 0) {    // if there are no songs in the list
-            binding.noSongs.visibility = View.INVISIBLE
+            binding.noSongs.visibility = View.VISIBLE
         } else { // if the songs existS
             //showing songs in the recyclerview
             binding.recyclerView.setLayoutManager(LinearLayoutManager(this))
@@ -97,50 +96,38 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    //    storage checking and request permissions
+    // permission checking
     fun checkPermission(): Boolean {
-        val result = ContextCompat.checkSelfPermission(
-            this@MainActivity,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
-        return if (result == PackageManager.PERMISSION_GRANTED) {
-            true
+        val result = ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_EXTERNAL_STORAGE)
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            return true
         } else {
-            false
+            Toast.makeText(this,"grant permission in app settings",Toast.LENGTH_SHORT)
+            return false
         }
     }
 
-    fun requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this@MainActivity, Manifest.permission.READ_EXTERNAL_STORAGE)) { //if the permission is denied
-            showRotationalDialogForPermission()
-            Toast.makeText(this, "storage permission is required", Toast.LENGTH_SHORT).show()
-        } else { //if the permission is accepted
-            ActivityCompat.requestPermissions(
-                this@MainActivity,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                69
-            )
-        }
-    }
-
-
-    // dialog box
+    // dialog box for permission
     private fun showRotationalDialogForPermission() {
         AlertDialog.Builder(this)
-            .setMessage("It looks like you have turned off permissions " + "required for this feature. It can be made under App Settings!!!")
-            .setPositiveButton("Go to Settings(Badri)") { _, _ ->
+            .setMessage("It looks like you have turned off permissions " + "required for this feature. It can be made under app Settings")
+            .setPositiveButton("Go to Settings") { _, _ ->
                 try {
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                     val uri = Uri.fromParts("package", packageName, null)
                     intent.data = uri
                     startActivity(intent)
-
+                    this.finish()
+                    startActivity(this.intent)
                 } catch (e: ActivityNotFoundException) {
                     e.printStackTrace()
                 }
 
-            }.setNegativeButton("Cancel(Badri)") { dialog, _ ->
+            }.setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
+                Toast.makeText(this,"grant permission in app settings",Toast.LENGTH_SHORT)
+                this.finish()
+                this.startActivity(intent)
             }.show()
     }
 
@@ -151,6 +138,5 @@ class MainActivity : AppCompatActivity() {
             binding.recyclerView!!.adapter = MusicListAdapter(songsList, applicationContext)
         }
     }
-
 
 }
