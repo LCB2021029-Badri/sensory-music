@@ -12,5 +12,5 @@ https://github.com/LCB2021029-Badri/sensory-music/assets/96579549/97f8b58c-2d19-
 3. Sensor Manager
 4. Media Controller
 
-##Install the apk
+## Install the apk
 Go to APK file and download the "sensory misic.apk" and install the app
